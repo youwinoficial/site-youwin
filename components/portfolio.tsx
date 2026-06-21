@@ -7,7 +7,7 @@ const PROJECTS = [
     title: "Nego do Borel - Me Solta",
     category: "Videoclipe",
     description: "O clipe do hit Me Solta, lançado em 2018 por Nego do Borel em parceria com o DJ Rennan da Penha, foi indicado ao Grammy Latino em 2019. A produção concorreu na categoria Melhor Vídeo Musical Versão Curta, destacando-se pela repercussão do trabalho audiovisual",
-    image: "/images/portfolio-videoclipe.png",
+    image: "/images/nego-borel.JPG",
     href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u",
   },
   {
@@ -19,11 +19,12 @@ const PROJECTS = [
     href: "https://youtu.be/ou-a5GE_yyI",
   },
   {
-    title: "Comercial — Sneaker Drop",
-    category: "Marca",
-    description: "Vídeo de produto premium com motion graphics e sound design.",
-    image: "/images/portfolio-marca.png",
-    href: "https://youtube.com",
+    title: "Comercial — Governo do Estado de São Paulo",
+    category: "Comercial",
+    description:
+      "Comercial institucional produzido para o Governo do Estado de São Paulo, com edição dinâmica, ritmo envolvente e acabamento profissional alinhado à comunicação oficial.",
+    image: "/images/portfolio-comercial-sp.jpg",
+    href: "https://youtu.be/BIlB-gs2FII",
   },
   {
     title: "Reels — Criador de Conteúdo",
