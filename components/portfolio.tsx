@@ -4,11 +4,11 @@ import { Reveal } from "@/components/reveal"
 
 const PROJECTS = [
   {
-    title: "Videoclipe — Trap Noturno",
+    title: "Nego do Borel - Me Solta",
     category: "Videoclipe",
-    description: "Edição dinâmica e color grading intenso para artista independente.",
+    description: "O clipe do hit Me Solta, lançado em 2018 por Nego do Borel em parceria com o DJ Rennan da Penha, foi indicado ao Grammy Latino em 2019. A produção concorreu na categoria Melhor Vídeo Musical Versão Curta, destacando-se pela repercussão do trabalho audiovisual",
     image: "/images/portfolio-videoclipe.png",
-    href: "https://youtube.com",
+    href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u",
   },
   {
     title: "Aftermovie — Festival",
