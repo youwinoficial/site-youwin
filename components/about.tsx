@@ -2,9 +2,9 @@ import Image from "next/image"
 import { Reveal } from "@/components/reveal"
 
 const STATS = [
-  { value: "8+", label: "Anos de experiência" },
-  { value: "500+", label: "Projetos entregues" },
-  { value: "50M+", label: "Visualizações geradas" },
+  { value: "22+", label: "Anos de experiência" },
+  { value: "1200+", label: "Projetos entregues" },
+  { value: "7Bi+", label: "Visualizações geradas" },
 ]
 
 export function About() {
@@ -24,7 +24,7 @@ export function About() {
           </div>
           <div className="absolute -bottom-6 -right-2 hidden bg-primary px-6 py-4 text-primary-foreground sm:block md:-right-6">
             <p className="font-heading text-2xl font-bold uppercase leading-none">YOUWIN</p>
-            <p className="mt-1 text-xs uppercase tracking-widest opacity-80">Post Production</p>
+            <p className="mt-1 text-xs uppercase tracking-widest opacity-80">Pós Produção</p>
           </div>
         </Reveal>
 
