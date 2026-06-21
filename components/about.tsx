@@ -14,10 +14,10 @@ export function About() {
         <Reveal className="relative">
           <div className="relative aspect-[4/5] w-full overflow-hidden border border-border">
             <Image
-              src="/images/youssef-portrait.png"
-              alt="Youssef Jabbour, editor de vídeo da YOUWIN"
+              src="/images/youwin-sobre.jpeg"
+              alt="Youssef Jabbour, editor de vídeo da YOUWIN, operando uma câmera de cinema"
               fill
-              className="object-cover"
+              className="object-cover object-top"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
