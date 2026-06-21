@@ -19,7 +19,7 @@ const PROJECTS = [
     href: "https://youtu.be/ou-a5GE_yyI",
   },
   {
-    title: "Comercial — Governo do Estado de São Paulo",
+    title: "Carteirinha Cheia - Governo do Estado de São Paulo",
     category: "Comercial",
     description:
       "Comercial institucional produzido para o Governo do Estado de São Paulo, com edição dinâmica, ritmo envolvente e acabamento profissional alinhado à comunicação oficial.",
