@@ -13,8 +13,9 @@ const PROJECTS = [
   {
     title: "Videoclipe",
     category: "Videoclipe",
-    description: "Videoclipe editado com cortes no ritmo da música e colorização cinematográfica.",
-    image: "/images/portfolio-evento.png",
+    description:
+      "Edição completa do videoclipe: cortes sincronizados com a batida, ritmo dinâmico, color grading cinematográfico e transições que sustentam a narrativa visual da música.",
+    image: "/images/portfolio-videoclipe-yt.jpg",
     href: "https://youtu.be/ou-a5GE_yyI",
   },
   {
