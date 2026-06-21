@@ -11,11 +11,11 @@ const PROJECTS = [
     href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u",
   },
   {
-    title: "Aftermovie — Festival",
-    category: "Evento",
-    description: "Captação da energia do público com cortes no ritmo da música.",
+    title: "Videoclipe",
+    category: "Videoclipe",
+    description: "Videoclipe editado com cortes no ritmo da música e colorização cinematográfica.",
     image: "/images/portfolio-evento.png",
-    href: "https://youtube.com",
+    href: "https://youtu.be/ou-a5GE_yyI",
   },
   {
     title: "Comercial — Sneaker Drop",
