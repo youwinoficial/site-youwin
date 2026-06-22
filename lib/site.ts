@@ -1,5 +1,11 @@
 // Número de WhatsApp da YOUWIN (formato internacional, somente dígitos)
-export const WHATSAPP_NUMBER = "5511999999999"
+export const WHATSAPP_NUMBER = "5511963442015"
+
+// E-mail oficial da YOUWIN
+export const CONTACT_EMAIL = "youwin.oficial@gmail.com"
+
+// Instagram pessoal
+export const INSTAGRAM_URL = "https://instagram.com/youssef_jabbour"
 
 export const WHATSAPP_MESSAGE =
   "Olá! Vim pelo site da YOUWIN e gostaria de solicitar um orçamento para edição de vídeo."
