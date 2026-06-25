@@ -15,10 +15,37 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'YOUWIN | Edição Profissional de Vídeos',
+  title: 'YOUWIN | Estúdio de Edição e Pós-Produção Audiovisual Profissional',
   description:
-    'Especialista em edição de vídeo, pós-produção, motion graphics, color grading, videoclipes, eventos e conteúdo para redes sociais.',
+    'Especialista em pós-produção audiovisual, edição de vídeo, motion graphics, color grading, videoclipes, eventos e conteúdo para redes sociais. Transformamos suas gravações em vídeos profissionais.',
+  keywords: ['edição de vídeo', 'pós-produção', 'motion graphics', 'color grading', 'videoclipe', 'edição profissional', 'estúdio de vídeo', 'São Paulo'],
+  authors: [{ name: 'YOUWIN' }],
+  creator: 'YOUWIN',
+  publisher: 'YOUWIN',
   generator: 'v0.app',
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://youwinoficial.com',
+    siteName: 'YOUWIN',
+    title: 'YOUWIN | Estúdio de Edição e Pós-Produção Audiovisual',
+    description: 'Transformamos gravações comuns em vídeos profissionais através de edição, colorização, motion graphics, sound design e pós-produção criativa.',
+    images: [
+      {
+        url: '/images/youwin-logo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'YOUWIN - Estúdio de Pós-Produção Audiovisual',
+        type: 'image/jpeg',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'YOUWIN | Edição e Pós-Produção Audiovisual',
+    description: 'Transformamos gravações comuns em vídeos profissionais através de edição, colorização, motion graphics, sound design e pós-produção criativa.',
+    images: ['/images/youwin-logo.jpg'],
+  },
   icons: {
     icon: [
       {
