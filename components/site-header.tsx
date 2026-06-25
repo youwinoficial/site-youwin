@@ -17,6 +17,18 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  // Trava o scroll do body quando o menu mobile está aberto
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  }, [open])
+
   return (
     <header
       className={cn(
@@ -67,8 +79,8 @@ export function SiteHeader() {
       {/* Menu mobile */}
       <div
         className={cn(
-          "overflow-hidden border-t border-border bg-background/95 backdrop-blur-md transition-[max-height,opacity] duration-300 md:hidden",
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+          "fixed inset-0 top-16 z-40 overflow-hidden border-t border-border bg-background/98 backdrop-blur-xl transition-all duration-300 md:hidden",
+          open ? "translate-x-0 opacity-100" : "translate-x-full opacity-0",
         )}
       >
         <nav className="flex flex-col px-5 py-4" aria-label="Mobile">

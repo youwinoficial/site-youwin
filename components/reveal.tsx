@@ -38,7 +38,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
     <Tag
       // @ts-expect-error ref typing across polymorphic tag
       ref={ref}
-      className={cn("reveal", visible && "is-visible", className)}
+      className={cn("reveal", visible && "is-visible", "motion-reduce:animate-none motion-reduce:opacity-100", className)}
       style={{ animationDelay: `${delay}ms` }}
     >
       {children}
