@@ -23,7 +23,7 @@ export function About() {
             <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
           </div>
           <div className="absolute -bottom-6 -right-2 hidden bg-primary px-6 py-4 text-primary-foreground sm:block md:-right-6">
-            <p className="font-heading text-2xl font-bold uppercase leading-none">YOUWIN</p>
+            <p className="font-heading text-2xl font-bold uppercase leading-none">YOUSSEF JABBOUR</p>
             <p className="mt-1 text-xs uppercase tracking-widest opacity-80">Pós Produção</p>
           </div>
         </Reveal>
