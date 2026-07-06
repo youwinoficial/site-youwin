@@ -30,7 +30,7 @@ const PROJECTS = [
     title: "Netflix - Passinho a Passinho",
     category: "Puclicidade",
     description: "Passinho a Passinho foi uma jogada de marketing genial da Netflix para promover a série Sintonia, hit brasileiro criado pelo KondZilla. No clipe oficial, o funkeiro MC Doni ensina a galera da quebrada a assinar o serviço de forma prática, garantindo que ninguém ficasse de fora das aventuras dele e dos amigos Nando e Rita na Vila Áurea.",
-    image: "/images/portfolio-redes.png",
+    image: "/images/IMG_0433.jpeg",
     href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H",
   },
   {
