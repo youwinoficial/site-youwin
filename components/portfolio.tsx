@@ -27,11 +27,11 @@ const PROJECTS = [
     href: "https://youtu.be/BIlB-gs2FII",
   },
   {
-    title: "Reels — Criador de Conteúdo",
-    category: "Redes Sociais",
+    title: "Netflix - Passinho do cartão Pré Pago",
+    category: "Puclicidade",
     description: "Série de vídeos verticais otimizados para engajamento.",
     image: "/images/portfolio-redes.png",
-    href: "https://youtube.com",
+    href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H",
   },
   {
     title: "Brand Film — Corporativo",

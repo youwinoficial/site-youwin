@@ -61,7 +61,7 @@ export function Hero() {
         {/* Área do Demo Reel */}
         <div className="group relative mt-14 aspect-video w-full overflow-hidden border border-border md:mt-20">
           <Image
-            src="/images/hero-reel.png"
+            src="/videos/NETFLIX_PASSINHO.MP4"
             alt="Demo Reel YOUWIN"
             fill
             priority
