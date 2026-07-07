@@ -11,10 +11,10 @@ const PROJECTS = [
     href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u",
   },
   {
-    title: "Videoclipe",
+    title: "MC Fioti - A Luz do luar feat MC Ju Bronx e MC Vagninho",
     category: "Videoclipe",
     description:
-      "Edição completa do videoclipe: cortes sincronizados com a batida, ritmo dinâmico, color grading cinematográfico e transições que sustentam a narrativa visual da música.",
+      "Edição completa do videoclipe: cortes sincronizados com a batida, ritmo dinâmico, e transições que sustentam a narrativa visual da música.",
     image: "/images/portfolio-videoclipe-yt.jpg",
     href: "https://youtu.be/ou-a5GE_yyI",
   },
@@ -34,11 +34,11 @@ const PROJECTS = [
     href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H",
   },
   {
-    title: "Brand Film — Corporativo",
-    category: "Institucional",
-    description: "Filme institucional com narrativa limp",
-    image: "/images/portfolio-corporativo.png",
-    href: "https://youtube.com",
+    title: "Kevinho - Olha a Explosão",
+    category: "Videoclipe",
+    description: "Trabalho de montagem e edição para a KondZilla no videoclipe que superou a marca de 1 bilhão de views. Foco total no desenvolvimento de um ritmo dinâmico, cortes precisos em sincronia com o beat e construção de uma estética visual pop de alto engajamento.",
+    image: "/images/IMG_0434.jpeg",
+    href: "https://youtu.be/3yd_eoMOvqk?is=DyBzAEisL-qCEg-d",
   },
   {
     title: "Documentário — Atleta",
