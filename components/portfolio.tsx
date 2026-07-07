@@ -11,10 +11,10 @@ const PROJECTS = [
     href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u",
   },
   {
-    title: "Videoclipe",
+    title: "MC Fioti - A Luz do luar feat MC Ju Bronx e MC Vagninho",
     category: "Videoclipe",
     description:
-      "Edição completa do videoclipe: cortes sincronizados com a batida, ritmo dinâmico, color grading cinematográfico e transições que sustentam a narrativa visual da música.",
+      "Edição completa do videoclipe: cortes sincronizados com a batida, ritmo dinâmico, e transições que sustentam a narrativa visual da música.",
     image: "/images/portfolio-videoclipe-yt.jpg",
     href: "https://youtu.be/ou-a5GE_yyI",
   },
