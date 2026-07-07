@@ -37,7 +37,7 @@ const PROJECTS = [
     title: "Kevinho - Olha a Explosão",
     category: "Videoclipe",
     description: "Trabalho de montagem e edição para a KondZilla no videoclipe que superou a marca de 1 bilhão de views. Foco total no desenvolvimento de um ritmo dinâmico, cortes precisos em sincronia com o beat e construção de uma estética visual pop de alto engajamento.",
-    image: "/images/portfolio-corporativo.png",
+    image: "/images/IMG_0434.jpeg",
     href: "https://youtu.be/3yd_eoMOvqk?is=DyBzAEisL-qCEg-d",
   },
   {
