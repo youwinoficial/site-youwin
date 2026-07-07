@@ -34,9 +34,9 @@ const PROJECTS = [
     href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H",
   },
   {
-    title: "Brand Film — Corporativo",
-    category: "Institucional",
-    description: "Filme institucional com narrativa limp",
+    title: "Kevinho - Olha a Explosão",
+    category: "Videoclipe",
+    description: "Trabalho de montagem e edição para a KondZilla no videoclipe que superou a marca de 1 bilhão de views. Foco total no desenvolvimento de um ritmo dinâmico, cortes precisos em sincronia com o beat e construção de uma estética visual pop de alto engajamento.",
     image: "/images/portfolio-corporativo.png",
     href: "https://youtube.com",
   },
