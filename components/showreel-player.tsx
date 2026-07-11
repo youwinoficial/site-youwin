@@ -42,24 +42,62 @@ function loadYouTubeApi(): Promise<void> {
   return ytApiPromise
 }
 
+// Duração de cada trecho exibido antes de pular para o próximo vídeo.
+const SEGMENT_SECONDS = 10
+
 export function ShowreelPlayer() {
   const containerRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const playlistRef = useRef<string[]>([])
   const indexRef = useRef(0)
+  // Memória do ponto onde cada vídeo parou (por ID), para retomar de onde parou.
+  const positionsRef = useRef<Record<string, number>>({})
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [muted, setMuted] = useState(true)
   const [ready, setReady] = useState(false)
 
-  const playNext = useCallback(() => {
-    const player = playerRef.current
-    if (!player) return
-    indexRef.current = (indexRef.current + 1) % playlistRef.current.length
-    // Ao dar a volta na lista, reembaralha para manter a aleatoriedade.
-    if (indexRef.current === 0) {
-      playlistRef.current = shuffle(REEL_VIDEO_IDS)
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
     }
-    player.loadVideoById(playlistRef.current[indexRef.current])
   }, [])
+
+  // Toca o trecho de 10s do vídeo atual, retomando do ponto salvo.
+  const playSegment = useCallback(
+    (load: boolean) => {
+      const player = playerRef.current
+      if (!player) return
+      const videoId = playlistRef.current[indexRef.current]
+      const start = positionsRef.current[videoId] ?? 0
+
+      if (load) {
+        player.loadVideoById({ videoId, startSeconds: start })
+      } else {
+        player.seekTo(start, true)
+        player.playVideo()
+      }
+
+      clearTimer()
+      timerRef.current = setTimeout(() => {
+        // Salva o próximo ponto de partida desse vídeo (avança 10s).
+        const duration = player.getDuration?.() ?? 0
+        let nextPos = start + SEGMENT_SECONDS
+        // Se chegou ao fim do vídeo, a memória dele volta ao início.
+        if (duration && nextPos >= duration - 1) nextPos = 0
+        positionsRef.current[videoId] = nextPos
+
+        // Avança para o próximo vídeo da lista.
+        indexRef.current = (indexRef.current + 1) % playlistRef.current.length
+        // Ao dar a volta na lista, reembaralha para manter a aleatoriedade.
+        if (indexRef.current === 0) {
+          playlistRef.current = shuffle(REEL_VIDEO_IDS)
+        }
+        playSegment(true)
+      }, SEGMENT_SECONDS * 1000)
+    },
+    [clearTimer],
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -86,10 +124,19 @@ export function ShowreelPlayer() {
             e.target.mute()
             e.target.playVideo()
             setReady(true)
+            playSegment(false)
           },
           onStateChange: (e: any) => {
-            // 0 = ENDED
-            if (e.data === 0) playNext()
+            // 0 = ENDED: vídeo acabou antes dos 10s, reinicia a memória dele.
+            if (e.data === 0) {
+              const videoId = playlistRef.current[indexRef.current]
+              positionsRef.current[videoId] = 0
+              indexRef.current = (indexRef.current + 1) % playlistRef.current.length
+              if (indexRef.current === 0) {
+                playlistRef.current = shuffle(REEL_VIDEO_IDS)
+              }
+              playSegment(true)
+            }
           },
         },
       })
@@ -97,10 +144,11 @@ export function ShowreelPlayer() {
 
     return () => {
       cancelled = true
+      clearTimer()
       playerRef.current?.destroy?.()
       playerRef.current = null
     }
-  }, [playNext])
+  }, [playSegment, clearTimer])
 
   const toggleMute = useCallback(() => {
     const player = playerRef.current
