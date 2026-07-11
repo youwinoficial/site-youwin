@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { Play, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { whatsappLink } from "@/lib/site"
+import { ShowreelPlayer } from "@/components/showreel-player"
 
 export function Hero() {
   return (
@@ -58,36 +59,8 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Área do Demo Reel */}
-        <div className="group relative mt-14 aspect-video w-full overflow-hidden border border-border md:mt-20">
-          <Image
-            src="/videos/NETFLIX_PASSINHO.MP4"
-            alt="Demo Reel YOUWIN"
-            fill
-            priority
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/30" />
-
-          <button
-            type="button"
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4"
-            aria-label="Reproduzir Demo Reel"
-          >
-            <span className="flex size-20 items-center justify-center rounded-full bg-primary/90 text-primary-foreground shadow-2xl transition-transform duration-300 group-hover:scale-110 md:size-24">
-              <Play className="size-8 translate-x-0.5 fill-current md:size-10" />
-            </span>
-            <span className="font-heading text-sm font-medium uppercase tracking-[0.25em] text-foreground/90">
-              Assistir Demo Reel
-            </span>
-          </button>
-
-          <div className="absolute bottom-5 left-5 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-foreground/70">
-            <span className="size-2 animate-pulse rounded-full bg-primary" />
-            Showreel 2026
-          </div>
-        </div>
+        {/* Área do Showreel — toca os vídeos do portfólio aleatoriamente */}
+        <ShowreelPlayer />
       </div>
     </section>
   )
