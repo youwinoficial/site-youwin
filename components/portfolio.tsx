@@ -41,9 +41,9 @@ const PROJECTS = [
     href: "https://youtu.be/3yd_eoMOvqk?is=DyBzAEisL-qCEg-d",
   },
   {
-    title: "Documentário — Atleta",
-    category: "Documentário",
-    description: "Storytelling emocional com colorização teal & orange.",
+    title: "Ministério da Saúde",
+    category: "Comercial",
+    description: "Edição do comercial institucional do Ministério da Saúde para a campanha de combate e conscientização sobre o crack. Um trabalho focado em ritmo, impacto visual e sensibilidade narrativa para transmitir uma mensagem forte e necessária de utilidade pública.",
     image: "/images/portfolio-documentario.png",
     href: "https://youtube.com",
   },
