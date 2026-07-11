@@ -21,7 +21,7 @@ export function Hero() {
           </span>
 
           <Image
-            src="/images/youwin-logo.jpg"
+            src="/images/youwin-marcadagua.png"
             alt="YOUWIN"
             width={560}
             height={240}
