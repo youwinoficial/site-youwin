@@ -15,10 +15,61 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'YOUWIN | Edição Profissional de Vídeos',
+  metadataBase: new URL('https://www.youwin.com.br'),
+  title: {
+    default: 'YOUWIN | Edição Profissional de Vídeos',
+    template: '%s | YOUWIN',
+  },
   description:
     'Especialista em edição de vídeo, pós-produção, motion graphics, color grading, videoclipes, eventos e conteúdo para redes sociais.',
-  generator: 'v0.app',
+  applicationName: 'YOUWIN',
+  authors: [{ name: 'Youssef Jabbour', url: 'https://instagram.com/youssef_jabbour' }],
+  creator: 'YOUWIN',
+  publisher: 'YOUWIN',
+  keywords: [
+    'edição de vídeo',
+    'editor de vídeo',
+    'pós-produção',
+    'motion graphics',
+    'color grading',
+    'videoclipe',
+    'edição de videoclipe',
+    'sound design',
+    'vídeos para redes sociais',
+    'produção de vídeo',
+    'YOUWIN',
+    'Youssef Jabbour',
+    'São Paulo',
+  ],
+  alternates: {
+    canonical: 'https://www.youwin.com.br',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://www.youwin.com.br',
+    siteName: 'YOUWIN',
+    title: 'YOUWIN | Edição Profissional de Vídeos',
+    description:
+      'Especialista em edição de vídeo, pós-produção, motion graphics, color grading, videoclipes, eventos e conteúdo para redes sociais.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'YOUWIN | Edição Profissional de Vídeos',
+    description:
+      'Especialista em edição de vídeo, pós-produção, motion graphics, color grading, videoclipes, eventos e conteúdo para redes sociais.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   icons: {
     icon: [
       {
