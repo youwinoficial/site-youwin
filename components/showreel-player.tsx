@@ -8,7 +8,6 @@ import { Volume2, VolumeX } from "lucide-react"
 const REEL_VIDEO_IDS = [
   "FY3m6hMyh3g", // Nego do Borel - Me Solta
   "ou-a5GE_yyI", // MC Fioti - A Luz do Luar
-  "BIlB-gs2FII", // Carteirinha Cheia - Gov. SP
   "5Ca6ZSwLPKY", // Netflix - Passinho a Passinho
   "3yd_eoMOvqk", // Kevinho - Olha a Explosão
 ]
@@ -78,6 +77,12 @@ export function ShowreelPlayer() {
         player.playVideo()
       }
 
+      // Garante que as legendas fiquem desativadas em todos os vídeos.
+      try {
+        player.unloadModule("captions")
+        player.unloadModule("cc")
+      } catch {}
+
       clearTimer()
       timerRef.current = setTimeout(() => {
         // Salva o próximo ponto de partida desse vídeo (avança 10s).
@@ -118,6 +123,8 @@ export function ShowreelPlayer() {
           disablekb: 1,
           fs: 0,
           iv_load_policy: 3,
+          cc_load_policy: 0,
+          cc_lang_pref: "none",
         },
         events: {
           onReady: (e: any) => {
