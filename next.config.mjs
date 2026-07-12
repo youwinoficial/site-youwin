@@ -3,10 +3,15 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Habilitar otimização de imagens para melhor performance (LCP/FCP)
-  // images: {
-  //   unoptimized: true,
-  // },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/vi/**",
+      },
+    ],
+  },
 }
 
 export default nextConfig

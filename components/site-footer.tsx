@@ -1,4 +1,4 @@
-import { AtSign, Film, MessageCircle } from "lucide-react"
+import { AtSign, MessageCircle } from "lucide-react"
 import { NAV_LINKS, whatsappLink } from "@/lib/site"
 import { Wordmark } from "@/components/wordmark"
 
@@ -45,7 +45,7 @@ export function SiteFooter() {
                 <MessageCircle className="size-5" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/youssef_jabbour"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -53,15 +53,7 @@ export function SiteFooter() {
               >
                 <AtSign className="size-5" />
               </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="flex size-10 items-center justify-center border border-border text-foreground/80 transition-colors hover:border-primary hover:text-primary"
-              >
-                <Film className="size-5" />
-              </a>
+
             </div>
           </div>
         </div>

@@ -19,16 +19,16 @@ const PROJECTS = [
     href: "https://youtu.be/ou-a5GE_yyI",
   },
   {
-    title: "Carteirinha Cheia - Governo do Estado de São Paulo",
-    category: "Comercial",
+    title: "Pabllo Vittar e MC Kekel - Sente a Conexão",
+    category: "Publicidade",
     description:
-      "Comercial institucional produzido para o Governo do Estado de São Paulo, com edição dinâmica, ritmo envolvente e acabamento profissional alinhado à comunicação oficial.",
-    image: "/images/portfolio-comercial-sp.jpg",
-    href: "https://youtu.be/BIlB-gs2FII",
+      "Videoclipe publicitário criado para a Colgate, unindo a energia de Pabllo Vittar e MC Kekel em uma narrativa vibrante. A edição valoriza a música, a coreografia e a identidade da campanha com ritmo, cor e conexão.",
+    image: "https://i.ytimg.com/vi/P_Pyr5Lfy3k/maxresdefault.jpg",
+    href: "https://youtu.be/P_Pyr5Lfy3k",
   },
   {
     title: "Netflix - Passinho a Passinho",
-    category: "Puclicidade",
+    category: "Publicidade",
     description: "Passinho a Passinho foi uma jogada de marketing genial da Netflix para promover a série Sintonia, hit brasileiro criado pelo KondZilla. No clipe oficial, o funkeiro MC Doni ensina a galera da quebrada a assinar o serviço de forma prática, garantindo que ninguém ficasse de fora das aventuras dele e dos amigos Nando e Rita na Vila Áurea.",
     image: "/images/IMG_0433.jpeg",
     href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H",
@@ -101,7 +101,7 @@ export function Portfolio() {
                     {project.description}
                   </p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                    Assistir no YouTube
+                    {project.href.includes("vimeo.com") ? "Assistir no Vimeo" : "Assistir no YouTube"}
                     <Play className="size-3.5 fill-current" />
                   </span>
                 </div>

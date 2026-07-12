@@ -1,161 +1,257 @@
 "use client"
 
+import Image from "next/image"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Volume2, VolumeX } from "lucide-react"
+import { Play, Volume2, VolumeX } from "lucide-react"
 
-// IDs dos vídeos do YouTube presentes no portfólio.
-// O reel embaralha essa lista e vai tocando um após o outro.
 const REEL_VIDEO_IDS = [
   "FY3m6hMyh3g", // Nego do Borel - Me Solta
   "ou-a5GE_yyI", // MC Fioti - A Luz do Luar
+  "P_Pyr5Lfy3k", // Pabllo Vittar e MC Kekel - Sente a Conexão / Colgate
   "5Ca6ZSwLPKY", // Netflix - Passinho a Passinho
   "3yd_eoMOvqk", // Kevinho - Olha a Explosão
 ]
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
+const SEGMENT_MS = 10_000
+const POSTER_VIDEO_ID = "P_Pyr5Lfy3k"
+
+function shuffle<T>(items: T[]) {
+  const result = [...items]
+  for (let index = result.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    ;[result[index], result[randomIndex]] = [result[randomIndex], result[index]]
   }
-  return a
+  return result
 }
 
-// Carrega o script da API de IFrame do YouTube uma única vez.
-let ytApiPromise: Promise<void> | null = null
-function loadYouTubeApi(): Promise<void> {
-  if (typeof window === "undefined") return Promise.resolve()
-  if ((window as any).YT?.Player) return Promise.resolve()
-  if (ytApiPromise) return ytApiPromise
+let youtubeApiPromise: Promise<void> | null = null
 
-  ytApiPromise = new Promise<void>((resolve) => {
-    const prev = (window as any).onYouTubeIframeAPIReady
-    ;(window as any).onYouTubeIframeAPIReady = () => {
-      prev?.()
+function loadYouTubeApi() {
+  if ((window as Window & { YT?: { Player?: unknown } }).YT?.Player) {
+    return Promise.resolve()
+  }
+  if (youtubeApiPromise) return youtubeApiPromise
+
+  youtubeApiPromise = new Promise<void>((resolve) => {
+    const youtubeWindow = window as Window & {
+      onYouTubeIframeAPIReady?: () => void
+    }
+    const previousCallback = youtubeWindow.onYouTubeIframeAPIReady
+
+    youtubeWindow.onYouTubeIframeAPIReady = () => {
+      previousCallback?.()
       resolve()
     }
-    const tag = document.createElement("script")
-    tag.src = "https://www.youtube.com/iframe_api"
-    document.head.appendChild(tag)
+
+    const script = document.createElement("script")
+    script.src = "https://www.youtube.com/iframe_api"
+    script.async = true
+    document.head.appendChild(script)
   })
-  return ytApiPromise
+
+  return youtubeApiPromise
 }
 
-// Duração de cada trecho exibido antes de pular para o próximo vídeo.
-const SEGMENT_SECONDS = 10
-
 export function ShowreelPlayer() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const playerElementRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const playlistRef = useRef<string[]>([])
   const indexRef = useRef(0)
-  // Memória do ponto onde cada vídeo parou (por ID), para retomar de onde parou.
   const positionsRef = useRef<Record<string, number>>({})
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [muted, setMuted] = useState(true)
-  const [ready, setReady] = useState(false)
+  const segmentStartedAtRef = useRef(0)
+  const remainingMsRef = useRef(SEGMENT_MS)
+  const shouldPlayRef = useRef(false)
+  const initializedRef = useRef(false)
 
-  const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
+  const [initialized, setInitialized] = useState(false)
+  const [ready, setReady] = useState(false)
+  const [muted, setMuted] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
+  const [requiresInteraction, setRequiresInteraction] = useState(false)
+
+  const clearSegmentTimer = useCallback(() => {
+    if (!timerRef.current) return
+    clearTimeout(timerRef.current)
+    timerRef.current = null
+  }, [])
+
+  const disableCaptions = useCallback((player: any) => {
+    try {
+      player.unloadModule("captions")
+      player.unloadModule("cc")
+    } catch {
+      // Alguns vídeos não disponibilizam o módulo de legendas.
     }
   }, [])
 
-  // Toca o trecho de 10s do vídeo atual, retomando do ponto salvo.
-  const playSegment = useCallback(
-    (load: boolean) => {
-      const player = playerRef.current
-      if (!player) return
-      const videoId = playlistRef.current[indexRef.current]
-      const start = positionsRef.current[videoId] ?? 0
+  const scheduleNextSegment = useCallback(
+    (delay = remainingMsRef.current) => {
+      clearSegmentTimer()
+      remainingMsRef.current = delay
+      segmentStartedAtRef.current = performance.now()
 
-      if (load) {
-        player.loadVideoById({ videoId, startSeconds: start })
-      } else {
-        player.seekTo(start, true)
-        player.playVideo()
-      }
-
-      // Garante que as legendas fiquem desativadas em todos os vídeos.
-      try {
-        player.unloadModule("captions")
-        player.unloadModule("cc")
-      } catch {}
-
-      clearTimer()
       timerRef.current = setTimeout(() => {
-        // Salva o próximo ponto de partida desse vídeo (avança 10s).
-        const duration = player.getDuration?.() ?? 0
-        let nextPos = start + SEGMENT_SECONDS
-        // Se chegou ao fim do vídeo, a memória dele volta ao início.
-        if (duration && nextPos >= duration - 1) nextPos = 0
-        positionsRef.current[videoId] = nextPos
+        const player = playerRef.current
+        if (!player) return
 
-        // Avança para o próximo vídeo da lista.
+        const videoId = playlistRef.current[indexRef.current]
+        const currentTime = player.getCurrentTime?.() ?? 0
+        const duration = player.getDuration?.() ?? 0
+        positionsRef.current[videoId] =
+          duration && currentTime >= duration - 1 ? 0 : currentTime
+
         indexRef.current = (indexRef.current + 1) % playlistRef.current.length
-        // Ao dar a volta na lista, reembaralha para manter a aleatoriedade.
-        if (indexRef.current === 0) {
-          playlistRef.current = shuffle(REEL_VIDEO_IDS)
-        }
-        playSegment(true)
-      }, SEGMENT_SECONDS * 1000)
+        if (indexRef.current === 0) playlistRef.current = shuffle(REEL_VIDEO_IDS)
+
+        const nextVideoId = playlistRef.current[indexRef.current]
+        const nextPosition = positionsRef.current[nextVideoId] ?? 0
+        remainingMsRef.current = SEGMENT_MS
+        player.loadVideoById({ videoId: nextVideoId, startSeconds: nextPosition })
+        disableCaptions(player)
+        scheduleNextSegment(SEGMENT_MS)
+      }, delay)
     },
-    [clearTimer],
+    [clearSegmentTimer, disableCaptions],
   )
 
-  useEffect(() => {
-    let cancelled = false
+  const pausePlayback = useCallback(() => {
+    shouldPlayRef.current = false
+    const player = playerRef.current
+    if (timerRef.current) {
+      const elapsed = performance.now() - segmentStartedAtRef.current
+      remainingMsRef.current = Math.max(250, remainingMsRef.current - elapsed)
+    }
+    clearSegmentTimer()
+    player?.pauseVideo?.()
+  }, [clearSegmentTimer])
+
+  const resumePlayback = useCallback(() => {
+    const player = playerRef.current
+    if (!player || document.hidden) return
+    shouldPlayRef.current = true
+    player.playVideo?.()
+    disableCaptions(player)
+    scheduleNextSegment(remainingMsRef.current)
+  }, [disableCaptions, scheduleNextSegment])
+
+  const initializePlayer = useCallback(async () => {
+    if (initializedRef.current) return
+    initializedRef.current = true
+    setInitialized(true)
     playlistRef.current = shuffle(REEL_VIDEO_IDS)
 
-    loadYouTubeApi().then(() => {
-      if (cancelled || !containerRef.current) return
-      const YT = (window as any).YT
-      playerRef.current = new YT.Player(containerRef.current, {
-        videoId: playlistRef.current[0],
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          modestbranding: 1,
-          rel: 0,
-          playsinline: 1,
-          disablekb: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          cc_load_policy: 0,
-          cc_lang_pref: "none",
+    await loadYouTubeApi()
+    if (!playerElementRef.current) return
+
+    const YT = (window as any).YT
+    playerRef.current = new YT.Player(playerElementRef.current, {
+      videoId: playlistRef.current[0],
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 0,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1,
+        disablekb: 1,
+        fs: 0,
+        iv_load_policy: 3,
+        cc_load_policy: 0,
+      },
+      events: {
+        onReady: (event: any) => {
+          event.target.mute()
+          disableCaptions(event.target)
+          setReady(true)
+          if (shouldPlayRef.current && !document.hidden) resumePlayback()
+          else event.target.pauseVideo()
         },
-        events: {
-          onReady: (e: any) => {
-            e.target.mute()
-            e.target.playVideo()
-            setReady(true)
-            playSegment(false)
-          },
-          onStateChange: (e: any) => {
-            // 0 = ENDED: vídeo acabou antes dos 10s, reinicia a memória dele.
-            if (e.data === 0) {
-              const videoId = playlistRef.current[indexRef.current]
-              positionsRef.current[videoId] = 0
-              indexRef.current = (indexRef.current + 1) % playlistRef.current.length
-              if (indexRef.current === 0) {
-                playlistRef.current = shuffle(REEL_VIDEO_IDS)
-              }
-              playSegment(true)
-            }
-          },
+        onStateChange: (event: any) => {
+          if (event.data !== 0) return
+          clearSegmentTimer()
+          const finishedId = playlistRef.current[indexRef.current]
+          positionsRef.current[finishedId] = 0
+          indexRef.current = (indexRef.current + 1) % playlistRef.current.length
+          if (indexRef.current === 0) playlistRef.current = shuffle(REEL_VIDEO_IDS)
+          const nextId = playlistRef.current[indexRef.current]
+          remainingMsRef.current = SEGMENT_MS
+          event.target.loadVideoById({
+            videoId: nextId,
+            startSeconds: positionsRef.current[nextId] ?? 0,
+          })
+          disableCaptions(event.target)
+          if (shouldPlayRef.current) scheduleNextSegment(SEGMENT_MS)
         },
-      })
+      },
     })
+  }, [clearSegmentTimer, disableCaptions, resumePlayback, scheduleNextSegment])
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const connection = (navigator as Navigator & {
+      connection?: { saveData?: boolean }
+    }).connection
+    setRequiresInteraction(reducedMotion || Boolean(connection?.saveData))
+
+    const section = sectionRef.current
+    if (!section) return
+
+    const preloadObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !reducedMotion && !connection?.saveData) {
+          initializePlayer()
+          preloadObserver.disconnect()
+        }
+      },
+      { rootMargin: "500px 0px" },
+    )
+
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting && entry.intersectionRatio >= 0.15),
+      { threshold: [0, 0.15, 0.5] },
+    )
+
+    preloadObserver.observe(section)
+    visibilityObserver.observe(section)
 
     return () => {
-      cancelled = true
-      clearTimer()
+      preloadObserver.disconnect()
+      visibilityObserver.disconnect()
+    }
+  }, [initializePlayer])
+
+  useEffect(() => {
+    shouldPlayRef.current = isVisible
+    if (!ready) return
+    if (isVisible) resumePlayback()
+    else pausePlayback()
+  }, [isVisible, pausePlayback, ready, resumePlayback])
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.hidden) pausePlayback()
+      else if (isVisible) resumePlayback()
+    }
+    document.addEventListener("visibilitychange", handleVisibility)
+    return () => document.removeEventListener("visibilitychange", handleVisibility)
+  }, [isVisible, pausePlayback, resumePlayback])
+
+  useEffect(
+    () => () => {
+      clearSegmentTimer()
       playerRef.current?.destroy?.()
       playerRef.current = null
-    }
-  }, [playSegment, clearTimer])
+    },
+    [clearSegmentTimer],
+  )
+
+  const handleStart = useCallback(() => {
+    shouldPlayRef.current = true
+    if (!initializedRef.current) initializePlayer()
+    else if (ready) resumePlayback()
+  }, [initializePlayer, ready, resumePlayback])
 
   const toggleMute = useCallback(() => {
     const player = playerRef.current
@@ -163,47 +259,75 @@ export function ShowreelPlayer() {
     if (muted) {
       player.unMute()
       player.setVolume(100)
-      setMuted(false)
     } else {
       player.mute()
-      setMuted(true)
     }
+    setMuted((current) => !current)
   }, [muted])
 
   return (
-    <div className="group relative mt-14 aspect-video w-full overflow-hidden border border-border md:mt-20">
-      {/* Player do YouTube (a div é substituída pelo iframe) */}
-      <div className="absolute inset-0 h-full w-full">
-        <div ref={containerRef} className="h-full w-full" />
-      </div>
+    <div
+      ref={sectionRef}
+      className="group relative mt-14 aspect-video w-full overflow-hidden border border-border bg-card md:mt-20"
+    >
+      {!ready && (
+        <Image
+          src={`https://i.ytimg.com/vi/${POSTER_VIDEO_ID}/maxresdefault.jpg`}
+          alt="Pabllo Vittar e MC Kekel no videoclipe publicitário Sente a Conexão, da Colgate"
+          fill
+          className="object-cover"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+        />
+      )}
 
-      {/* Camada para impedir cliques diretos no iframe e manter o visual */}
+      {initialized && (
+        <div className={`absolute inset-0 ${ready ? "opacity-100" : "opacity-0"}`}>
+          <div ref={playerElementRef} className="h-full w-full" />
+        </div>
+      )}
+
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/20"
       />
 
-      {/* Loading state */}
-      {!ready && (
-        <div className="absolute inset-0 flex items-center justify-center bg-card">
-          <span className="font-heading text-sm font-medium uppercase tracking-[0.25em] text-muted-foreground">
-            Carregando Showreel...
+      {!initialized && (
+        <button
+          type="button"
+          onClick={handleStart}
+          className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-foreground"
+          aria-label="Reproduzir showreel"
+        >
+          <span className="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:scale-105 md:size-20">
+            <Play className="size-7 translate-x-0.5 fill-current md:size-8" />
+          </span>
+          <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em]">
+            {requiresInteraction ? "Reproduzir showreel" : "Showreel pronto para reproduzir"}
+          </span>
+        </button>
+      )}
+
+      {initialized && !ready && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background/35" role="status">
+          <span className="font-heading text-sm font-medium uppercase tracking-[0.25em] text-foreground">
+            Carregando showreel...
           </span>
         </div>
       )}
 
-      {/* Botão de som */}
-      <button
-        type="button"
-        onClick={toggleMute}
-        aria-label={muted ? "Ativar som" : "Desativar som"}
-        className="absolute bottom-5 right-5 flex size-11 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur-sm transition-colors hover:bg-primary hover:text-primary-foreground"
-      >
-        {muted ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
-      </button>
+      {ready && (
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={muted ? "Ativar som" : "Desativar som"}
+          className="absolute bottom-5 right-5 flex size-11 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+        >
+          {muted ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
+        </button>
+      )}
 
-      <div className="absolute bottom-5 left-5 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-foreground/70">
-        <span className="size-2 animate-pulse rounded-full bg-primary" />
+      <div className="absolute bottom-5 left-5 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-foreground/80">
+        <span className={`size-2 rounded-full bg-primary ${ready && isVisible ? "animate-pulse" : ""}`} />
         Showreel 2026
       </div>
     </div>
