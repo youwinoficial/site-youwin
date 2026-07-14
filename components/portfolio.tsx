@@ -1,113 +1,56 @@
 import Image from "next/image"
-import { Play } from "lucide-react"
+import { ArrowUpRight, Play } from "lucide-react"
 import { Reveal } from "@/components/reveal"
 
 const PROJECTS = [
-  {
-    title: "Nego do Borel - Me Solta",
-    category: "Videoclipe",
-    description: "O clipe do hit Me Solta, lançado em 2018 por Nego do Borel em parceria com o DJ Rennan da Penha, foi indicado ao Grammy Latino em 2019. A produção concorreu na categoria Melhor Vídeo Musical Versão Curta, destacando-se pela repercussão do trabalho audiovisual",
-    image: "/images/nego-borel.JPG",
-    href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u",
-  },
-  {
-    title: "MC Fioti - A Luz do luar feat MC Ju Bronx e MC Vagninho",
-    category: "Videoclipe",
-    description:
-      "Edição completa do videoclipe: cortes sincronizados com a batida, ritmo dinâmico, e transições que sustentam a narrativa visual da música.",
-    image: "/images/portfolio-videoclipe-yt.jpg",
-    href: "https://youtu.be/ou-a5GE_yyI",
-  },
-  {
-    title: "Pabllo Vittar e MC Kekel - Sente a Conexão",
-    category: "Publicidade",
-    description:
-      "Videoclipe publicitário criado para a Colgate, unindo a energia de Pabllo Vittar e MC Kekel em uma narrativa vibrante. A edição valoriza a música, a coreografia e a identidade da campanha com ritmo, cor e conexão.",
-    image: "https://i.ytimg.com/vi/P_Pyr5Lfy3k/maxresdefault.jpg",
-    href: "https://youtu.be/P_Pyr5Lfy3k",
-  },
-  {
-    title: "Netflix - Passinho a Passinho",
-    category: "Publicidade",
-    description: "Passinho a Passinho foi uma jogada de marketing genial da Netflix para promover a série Sintonia, hit brasileiro criado pelo KondZilla. No clipe oficial, o funkeiro MC Doni ensina a galera da quebrada a assinar o serviço de forma prática, garantindo que ninguém ficasse de fora das aventuras dele e dos amigos Nando e Rita na Vila Áurea.",
-    image: "/images/IMG_0433.jpeg",
-    href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H",
-  },
-  {
-    title: "Kevinho - Olha a Explosão",
-    category: "Videoclipe",
-    description: "Trabalho de montagem e edição para a KondZilla no videoclipe que superou a marca de 1 bilhão de views. Foco total no desenvolvimento de um ritmo dinâmico, cortes precisos em sincronia com o beat e construção de uma estética visual pop de alto engajamento.",
-    image: "/images/IMG_0434.jpeg",
-    href: "https://youtu.be/3yd_eoMOvqk?is=DyBzAEisL-qCEg-d",
-  },
-  {
-    title: "Ministério da Saúde",
-    category: "Comercial",
-    description: "Edição do comercial institucional do Ministério da Saúde para a campanha de combate e conscientização sobre o crack. Um trabalho focado em ritmo, impacto visual e sensibilidade narrativa para transmitir uma mensagem forte e necessária de utilidade pública.",
-    image: "/images/IMG_0437.png",
-    href: "https://vimeo.com/11844750",
-  },
+  { title: "Kevinho — Olha a Explosão", category: "Videoclipe", proof: "1 bilhão+ de views", description: "Montagem para KondZilla com ritmo dinâmico, cortes precisos no beat e estética pop de alto engajamento.", image: "/images/IMG_0434.jpeg", href: "https://youtu.be/3yd_eoMOvqk?is=DyBzAEisL-qCEg-d", featured: true },
+  { title: "Nego do Borel — Me Solta", category: "Videoclipe", proof: "Indicado ao Grammy Latino", description: "O hit com DJ Rennan da Penha concorreu a Melhor Vídeo Musical Versão Curta no Grammy Latino de 2019.", image: "/images/nego-borel.JPG", href: "https://youtu.be/FY3m6hMyh3g?is=hvkI0W8kjKA9Fo-u", featured: true },
+  { title: "Pabllo Vittar & MC Kekel — Sente a Conexão", category: "Publicidade · Colgate", proof: "Campanha musical", description: "Ritmo, cor e coreografia conectados à identidade vibrante da campanha Colgate.", image: "https://i.ytimg.com/vi/P_Pyr5Lfy3k/maxresdefault.jpg", href: "https://youtu.be/P_Pyr5Lfy3k" },
+  { title: "Netflix — Passinho a Passinho", category: "Publicidade", proof: "Campanha Sintonia", description: "Conteúdo musical criado para apresentar a assinatura da Netflix ao público de Sintonia.", image: "/images/IMG_0433.jpeg", href: "https://youtu.be/5Ca6ZSwLPKY?is=zqAoEak99G4pIP4H" },
+  { title: "MC Fioti — A Luz do Luar", category: "Videoclipe", proof: "Montagem musical", description: "Cortes sincronizados, ritmo dinâmico e transições que sustentam a narrativa da música.", image: "/images/portfolio-videoclipe-yt.jpg", href: "https://youtu.be/ou-a5GE_yyI" },
+  { title: "Ministério da Saúde", category: "Institucional", proof: "Utilidade pública", description: "Edição focada em impacto visual e sensibilidade para uma mensagem forte de conscientização.", image: "/images/IMG_0437.png", href: "https://vimeo.com/11844750" },
 ]
 
 export function Portfolio() {
   return (
-    <section id="portfolio" className="relative border-t border-border py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <Reveal className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-          <div className="max-w-2xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-primary">
-              Portfólio
-            </p>
-            <h2 className="text-balance font-heading text-3xl font-bold uppercase leading-tight tracking-tight md:text-5xl">
-              Projetos selecionados
-            </h2>
+    <section id="portfolio" className="section-shell">
+      <div className="mx-auto max-w-7xl border-x border-border/70 px-4 py-24 md:px-8 md:py-32">
+        <Reveal className="grid gap-8 border-b border-border/70 pb-12 md:grid-cols-[1fr_0.55fr] md:items-end">
+          <div>
+            <p className="section-kicker">01 · Trabalhos selecionados</p>
+            <h2 className="section-title mt-5">Cada corte<br /><span className="text-muted-foreground">tem uma intenção.</span></h2>
           </div>
-          <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-            Uma amostra de trabalhos em videoclipes, eventos, marcas e conteúdo digital.
+          <p className="max-w-md text-pretty leading-relaxed text-muted-foreground md:justify-self-end">
+            Uma seleção de projetos em que montagem, ritmo e acabamento transformaram conteúdo em resultado cultural e comercial.
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {PROJECTS.map((project, i) => (
-            <Reveal as="article" key={project.title} delay={i * 70}>
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block overflow-hidden border border-border bg-card transition-colors hover:border-primary/60"
-              >
-                <div className="relative aspect-video overflow-hidden">
-                  <Image
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-transparent to-transparent" />
-                  <span className="absolute left-4 top-4 bg-background/80 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-widest text-foreground backdrop-blur-sm">
-                    {project.category}
-                  </span>
-                  <span className="absolute right-4 top-4 flex size-11 items-center justify-center rounded-full bg-primary/90 text-primary-foreground opacity-0 transition-all duration-300 group-hover:opacity-100">
-                    <Play className="size-4 translate-x-0.5 fill-current" />
-                  </span>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="font-heading text-lg font-semibold uppercase leading-snug tracking-tight">
-                    {project.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {project.description}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                    {project.href.includes("vimeo.com") ? "Assistir no Vimeo" : "Assistir no YouTube"}
-                    <Play className="size-3.5 fill-current" />
-                  </span>
-                </div>
-              </a>
-            </Reveal>
-          ))}
+        <div className="mt-12 grid gap-x-5 gap-y-14 md:grid-cols-12">
+          {PROJECTS.map((project, index) => {
+            const featured = project.featured
+            const span = featured ? "md:col-span-6" : index === 2 || index === 5 ? "md:col-span-7" : "md:col-span-5"
+            return (
+              <Reveal as="article" key={project.title} delay={(index % 2) * 90} className={span}>
+                <a href={project.href} target="_blank" rel="noopener noreferrer" className="project-frame group block">
+                  <div className={`relative overflow-hidden ${featured ? "aspect-[4/3]" : "aspect-video"}`}>
+                    <Image src={project.image} alt={`Frame do projeto ${project.title}`} fill className="object-cover transition duration-700 ease-out group-hover:scale-[1.025] group-hover:saturate-[1.08]" sizes={featured ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 58vw"} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/10" />
+                    <div className="frame-corners" aria-hidden="true" />
+                    <span className="absolute left-4 top-4 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-foreground/80">SEQ_{String(index + 1).padStart(2, "0")}</span>
+                    <span className="absolute bottom-4 right-4 flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110"><Play className="size-4 translate-x-px fill-current" /></span>
+                  </div>
+                  <div className="grid gap-4 border-x border-b border-border/70 p-5 sm:grid-cols-[1fr_auto] sm:items-start md:p-6">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-3 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-primary"><span>{project.category}</span><span className="h-px w-5 bg-border" /><span className="text-muted-foreground">{project.proof}</span></div>
+                      <h3 className="mt-4 text-balance font-heading text-2xl font-medium uppercase leading-none tracking-tight md:text-3xl">{project.title}</h3>
+                      <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+                    </div>
+                    <ArrowUpRight className="size-5 text-muted-foreground transition-colors group-hover:text-primary" />
+                  </div>
+                </a>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>

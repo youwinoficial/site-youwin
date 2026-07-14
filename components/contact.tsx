@@ -1,164 +1,46 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
-import { MessageCircle, ArrowRight } from "lucide-react"
-import { WHATSAPP_NUMBER, whatsappLink } from "@/lib/site"
+import { ArrowUpRight, MessageCircle } from "lucide-react"
+import { WHATSAPP_NUMBER } from "@/lib/site"
 import { Reveal } from "@/components/reveal"
 
-const PROJECT_TYPES = [
-  "Videoclipe",
-  "Evento / Aftermovie",
-  "Vídeo para Marca",
-  "Conteúdo para Redes Sociais",
-  "Documentário",
-  "Outro",
-]
+const PROJECT_TYPES = ["Videoclipe", "Publicidade", "Conteúdo para redes sociais", "Documentário", "Evento / Aftermovie", "Outro"]
 
 export function Contact() {
-  const [form, setForm] = useState({
-    nome: "",
-    email: "",
-    whatsapp: "",
-    tipo: "",
-    mensagem: "",
-  })
+  const [form, setForm] = useState({ nome: "", tipo: "", prazo: "", mensagem: "" })
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    const text = [
-      "Olá! Vim pelo site da YOUWIN.",
-      `Nome: ${form.nome}`,
-      `E-mail: ${form.email}`,
-      `WhatsApp: ${form.whatsapp}`,
-      `Tipo de projeto: ${form.tipo || "Não informado"}`,
-      `Mensagem: ${form.mensagem}`,
-    ].join("\n")
-    window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,
-      "_blank",
-      "noopener,noreferrer",
-    )
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+    const text = ["Olá! Vim pelo site da YOUWIN e gostaria de iniciar um projeto.", `Nome: ${form.nome}`, `Tipo de projeto: ${form.tipo || "Não informado"}`, `Prazo: ${form.prazo || "A definir"}`, `Briefing: ${form.mensagem}`].join("\n")
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer")
   }
 
-  const fieldClass =
-    "w-full border border-input bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none transition-colors focus:border-primary"
+  const fieldClass = "w-full border-b border-border bg-transparent px-0 py-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary"
 
   return (
-    <section id="contato" className="relative border-t border-border py-24 md:py-32">
-      <div className="mx-auto max-w-5xl px-5 md:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-primary">
-            Contato
-          </p>
-          <h2 className="text-balance font-heading text-3xl font-bold uppercase leading-tight tracking-tight md:text-5xl">
-            Vamos criar algo memorável
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Conte sobre o seu projeto e receba um orçamento personalizado. Respondo
-            rápido pelo WhatsApp.
-          </p>
-        </Reveal>
+    <section id="contato" className="section-shell">
+      <div className="mx-auto max-w-7xl border-x border-border/70 px-4 py-24 md:px-8 md:py-32">
+        <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+          <Reveal>
+            <p className="section-kicker">04 · Próximo corte</p>
+            <h2 className="section-title mt-5">Tem uma história<br /><span className="text-primary">para montar?</span></h2>
+            <p className="mt-7 max-w-md text-pretty leading-relaxed text-muted-foreground">Preencha o essencial. O formulário prepara uma mensagem organizada e abre a conversa diretamente no WhatsApp.</p>
+            <div className="mt-10 flex items-center gap-3 border-t border-border/70 pt-6 text-xs uppercase tracking-[0.16em] text-muted-foreground"><MessageCircle className="size-4 text-primary" /> Resposta direta pelo WhatsApp</div>
+          </Reveal>
 
-        <Reveal delay={120} className="mt-12">
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="nome" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Nome
-              </label>
-              <input
-                id="nome"
-                required
-                value={form.nome}
-                onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                placeholder="Seu nome"
-                className={fieldClass}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                E-mail
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="voce@email.com"
-                className={fieldClass}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="whatsapp" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                WhatsApp
-              </label>
-              <input
-                id="whatsapp"
-                required
-                value={form.whatsapp}
-                onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                placeholder="(00) 00000-0000"
-                className={fieldClass}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="tipo" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Tipo de Projeto
-              </label>
-              <select
-                id="tipo"
-                value={form.tipo}
-                onChange={(e) => setForm({ ...form, tipo: e.target.value })}
-                className={fieldClass}
-              >
-                <option value="">Selecione...</option>
-                {PROJECT_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-2 sm:col-span-2">
-              <label htmlFor="mensagem" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Mensagem
-              </label>
-              <textarea
-                id="mensagem"
-                required
-                rows={4}
-                value={form.mensagem}
-                onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
-                placeholder="Conte um pouco sobre o seu projeto..."
-                className={`${fieldClass} resize-none`}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center gap-2 bg-foreground px-7 py-3.5 text-sm font-semibold text-background transition-opacity hover:opacity-90 sm:col-span-2"
-            >
-              Enviar Mensagem
-              <ArrowRight className="size-4" />
-            </button>
-          </form>
-        </Reveal>
-
-        <Reveal delay={200} className="mt-8">
-          <a
-            href={whatsappLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-3 bg-primary px-7 py-5 text-base font-bold uppercase tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            <MessageCircle className="size-6" />
-            Falar Agora no WhatsApp
-          </a>
-        </Reveal>
+          <Reveal delay={120}>
+            <form onSubmit={handleSubmit} className="border-t border-border/70">
+              <label className="block border-b border-border/70 py-5" htmlFor="nome"><span className="field-label">01 · Seu nome</span><input id="nome" required value={form.nome} onChange={(event) => setForm({ ...form, nome: event.target.value })} placeholder="Como posso chamar você?" className={fieldClass} /></label>
+              <div className="grid sm:grid-cols-2">
+                <label className="block border-b border-border/70 py-5 sm:border-r sm:pr-6" htmlFor="tipo"><span className="field-label">02 · Tipo de projeto</span><select id="tipo" required value={form.tipo} onChange={(event) => setForm({ ...form, tipo: event.target.value })} className={fieldClass}><option value="">Selecione</option>{PROJECT_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}</select></label>
+                <label className="block border-b border-border/70 py-5 sm:pl-6" htmlFor="prazo"><span className="field-label">03 · Prazo desejado</span><input id="prazo" value={form.prazo} onChange={(event) => setForm({ ...form, prazo: event.target.value })} placeholder="Ex.: 30 dias" className={fieldClass} /></label>
+              </div>
+              <label className="block border-b border-border/70 py-5" htmlFor="mensagem"><span className="field-label">04 · Briefing</span><textarea id="mensagem" required rows={4} value={form.mensagem} onChange={(event) => setForm({ ...form, mensagem: event.target.value })} placeholder="Conte a ideia, duração e formatos necessários." className={`${fieldClass} resize-none`} /></label>
+              <button type="submit" className="cut-button group mt-7 w-full justify-between sm:w-auto">Preparar mensagem <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></button>
+            </form>
+          </Reveal>
+        </div>
       </div>
     </section>
   )

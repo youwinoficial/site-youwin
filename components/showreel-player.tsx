@@ -268,7 +268,7 @@ export function ShowreelPlayer() {
   return (
     <div
       ref={sectionRef}
-      className="group relative mt-14 aspect-video w-full overflow-hidden border border-border bg-card md:mt-20"
+      className="group relative aspect-video w-full overflow-hidden border border-border/70 bg-card"
     >
       {!ready && (
         <Image
@@ -286,10 +286,8 @@ export function ShowreelPlayer() {
         </div>
       )}
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/20"
-      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-background/10 ring-1 ring-inset ring-border/70" />
+      <div className="frame-corners" aria-hidden="true" />
 
       {!initialized && (
         <button
