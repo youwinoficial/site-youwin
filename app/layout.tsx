@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Inter, Oswald, Geist_Mono } from 'next/font/google'
+import { Inter, Oswald } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ variable: '--font-inter', subsets: ['latin'] })
@@ -9,11 +9,6 @@ const oswald = Oswald({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
 })
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
-
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.youwin.com.br'),
   title: {
@@ -102,7 +97,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${oswald.variable} ${geistMono.variable} bg-background`}
+      className={`${inter.variable} ${oswald.variable} bg-background`}
     >
       <body className="font-sans antialiased">
         {children}
